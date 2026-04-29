@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সংগঠন লগইন ও রেজিস্ট্রেশন</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; bg-gray-50; }
+        .tab-active { border-bottom: 3px solid #10b981; color: #10b981; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white shadow-xl rounded-2xl w-full max-w-2xl overflow-hidden">
+        <div class="flex border-b text-center cursor-pointer">
+            <div id="loginTab" class="w-1/2 py-4 font-bold tab-active" onclick="showTab('login')">লগইন</div>
+            <div id="regTab" class="w-1/2 py-4 font-bold text-gray-500" onclick="showTab('reg')">রেজিস্ট্রেশন</div>
+        </div>
+
+        <div id="loginSection" class="p-8">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">ফিরে আসায় স্বাগতম</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 mb-2">মোবাইল নাম্বার</label>
+                    <input type="tel" placeholder="আপনার মোবাইল নাম্বার দিন" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button class="w-full bg-emerald-600 text-white py-3 rounded-lg font-bold hover:bg-emerald-700 transition">লগইন করুন</button>
+            </div>
+        </div>
+
+        <div id="regSection" class="p-8 hidden h-[70vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">সদস্য হিসেবে যোগ দিন</h2>
+            <form class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600">১. নাম</label>
+                        <input type="text" placeholder="পূর্ণ নাম" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">২. পিতার নাম</label>
+                        <input type="text" placeholder="পিতার নাম" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">৩. মাতার নাম</label>
+                        <input type="text" placeholder="মাতার নাম" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">৪. মোবাইল নাম্বার</label>
+                        <input type="tel" placeholder="০১৭xxxxxxxx" class="w-full p-2 border rounded-md">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-gray-600">৫. বয়স</label>
+                        <input type="number" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">রক্তের গ্রুপ</label>
+                        <select class="w-full p-2 border rounded-md bg-white">
+                            <option>সিলেক্ট করুন</option>
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">পারিবারিক সম্পর্ক</label>
+                        <select class="w-full p-2 border rounded-md bg-white">
+                            <option>অবিবাহিত</option>
+                            <option>বিবাহিত</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4 p-4 bg-gray-50 rounded-lg">
+                    <p class="font-bold border-b pb-2">ঠিকানা বিবরণ</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600">৭. বিভাগ</label>
+                            <select id="division" class="w-full p-2 border rounded-md"><option>রংপুর</option></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">৮. জেলা</label>
+                            <select id="district" class="w-full p-2 border rounded-md"><option>রংপুর</option></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">৯. উপজেলা</label>
+                            <select id="upazila" class="w-full p-2 border rounded-md"><option>বদরগঞ্জ</option></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">১০. ইউনিয়ন</label>
+                            <select id="union" class="w-full p-2 border rounded-md"><option>কালুপাড়া</option></select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">১১. ওয়ার্ড (টাইপ করুন)</label>
+                            <input type="text" placeholder="যেমন: ০৫" class="w-full p-2 border rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">১২. গ্রাম (টাইপ করুন)</label>
+                            <input type="text" placeholder="গ্রামের নাম" class="w-full p-2 border rounded-md">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-600">৬. পেশা</label>
+                        <select class="w-full p-2 border rounded-md bg-white">
+                            <option>ছাত্র</option>
+                            <option>ব্যবসায়ী</option>
+                            <option>চাকরিজীবী</option>
+                            <option>অন্যান্য</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 font-bold text-emerald-700">১৩. সাহায্যের পরিমাণ (মাসিক)</label>
+                        <input type="number" placeholder="৳ টাকার পরিমাণ" class="w-full p-2 border-2 border-emerald-300 rounded-md">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg">রেজিস্ট্রেশন সম্পন্ন করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tab) {
+            const loginSec = document.getElementById('loginSection');
+            const regSec = document.getElementById('regSection');
+            const loginTab = document.getElementById('loginTab');
+            const regTab = document.getElementById('regTab');
+
+            if(tab === 'login') {
+                loginSec.classList.remove('hidden');
+                regSec.classList.add('hidden');
+                loginTab.classList.add('tab-active', 'text-emerald-600');
+                regTab.classList.remove('tab-active', 'text-emerald-600');
+                regTab.classList.add('text-gray-500');
+            } else {
+                regSec.classList.remove('hidden');
+                loginSec.classList.add('hidden');
+                regTab.classList.add('tab-active', 'text-emerald-600');
+                loginTab.classList.remove('tab-active', 'text-emerald-600');
+                loginTab.classList.add('text-gray-500');
+            }
+        }
+    </script>
+</body>
+</html>
