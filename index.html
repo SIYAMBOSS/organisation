@@ -16,7 +16,7 @@
             justify-content: center;
         }
         .glass {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -44,7 +44,7 @@
                 <p class="text-gray-400 mt-2">মোবাইল নাম্বার দিয়ে প্রবেশ করুন</p>
             </div>
             <div class="space-y-5">
-                <input type="tel" placeholder="০১৭XXXXXXXX" class="input-glass w-full p-4 rounded-xl text-lg text-center">
+                <input type="tel" id="loginPhone" placeholder="০১৭XXXXXXXX" class="input-glass w-full p-4 rounded-xl text-lg text-center">
                 <button class="w-full bg-sky-500 hover:bg-sky-600 py-4 rounded-xl font-bold text-lg shadow-lg transition transform hover:scale-[1.02]">প্রবেশ করুন</button>
                 <p class="text-center text-gray-400">অ্যাকাউন্ট নেই? <button onclick="toggleForm()" class="text-sky-400 font-bold hover:underline">নতুন অ্যাকাউন্ট করুন</button></p>
             </div>
@@ -59,7 +59,7 @@
                     <input type="text" placeholder="৩. মাতার নাম" class="input-glass p-3 rounded-lg">
                     <input type="tel" placeholder="৪. মোবাইল নাম্বার" class="input-glass p-3 rounded-lg">
                     <input type="number" placeholder="৫. বয়স" class="input-glass p-3 rounded-lg">
-                    <select class="input-glass p-3 rounded-lg">
+                    <select class="input-glass p-3 rounded-lg" id="bloodGroup">
                         <option value="">রক্তের গ্রুপ</option>
                         <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
                         <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
@@ -74,22 +74,22 @@
                 </div>
 
                 <div class="p-4 bg-white/5 rounded-xl space-y-3">
-                    <p class="text-sm font-bold text-sky-300">ঠিকানা ডিটেইলস</p>
+                    <p class="text-sm font-bold text-sky-300">ঠিকানা বিবরণ (ড্রপডাউন)</p>
                     <div class="grid grid-cols-2 gap-3">
-                        <select id="division" class="input-glass p-2 rounded-md text-sm" onchange="loadDistricts()"><option>বিভাগ</option></select>
-                        <select id="district" class="input-glass p-2 rounded-md text-sm" onchange="loadUpazilas()"><option>জেলা</option></select>
-                        <select id="upazila" class="input-glass p-2 rounded-md text-sm" onchange="loadUnions()"><option>উপজেলা</option></select>
-                        <select id="union" class="input-glass p-2 rounded-md text-sm"><option>ইউনিয়ন</option></select>
+                        <select id="division" class="input-glass p-2 rounded-md text-sm"><option value="">বিভাগ</option></select>
+                        <select id="district" class="input-glass p-2 rounded-md text-sm"><option value="">জেলা</option></select>
+                        <select id="upazila" class="input-glass p-2 rounded-md text-sm"><option value="">উপজেলা</option></select>
+                        <select id="union" class="input-glass p-2 rounded-md text-sm"><option value="">ইউনিয়ন</option></select>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
-                        <input type="text" placeholder="১১. ওয়ার্ড" class="input-glass p-2 rounded-md text-sm">
-                        <input type="text" placeholder="১২. গ্রাম" class="input-glass p-2 rounded-md text-sm">
+                        <input type="text" placeholder="১১. ওয়ার্ড নম্বর" class="input-glass p-2 rounded-md text-sm">
+                        <input type="text" placeholder="১২. গ্রাম/মহল্লা" class="input-glass p-2 rounded-md text-sm">
                     </div>
                 </div>
 
                 <input type="number" placeholder="১৩. মাসিক সাহায্য (৳)" class="input-glass w-full p-4 rounded-xl border-2 border-sky-500/30 font-bold text-center">
 
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 py-4 rounded-xl font-bold text-lg shadow-lg transition transform hover:scale-[1.02]">আবেদন জমা দিন</button>
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 py-4 rounded-xl font-bold text-lg shadow-lg">আবেদন জমা দিন</button>
             </form>
             <p class="text-center text-gray-400 mt-6">আগে থেকেই মেম্বার? <button onclick="toggleForm()" class="text-sky-400 font-bold hover:underline">লগইন করুন</button></p>
         </div>
@@ -97,15 +97,70 @@
     </div>
 
     <script>
+        // ফর্ম পরিবর্তন করার ফাংশন
         function toggleForm() {
             document.getElementById('loginArea').classList.toggle('hidden');
             document.getElementById('regArea').classList.toggle('hidden');
         }
 
-        // ৬৪ জেলার ডাটা কানেক্ট করার স্মার্ট লজিক (আপনি আপনার JSON লিংকটি এখানে দেবেন)
-        const dataUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/bangladesh_geocode.json';
-        
-        // এখানে ডাটা ফেচিং এবং ড্রপডাউন আপডেট করার লজিক লিখতে হবে...
+        // ৬৪ জেলার ডাটা সোর্স (JSON Link)
+        const divisionsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/divisions/divisions.json';
+        const districtsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/districts/districts.json';
+        const upazilasUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/upazilas/upazilas.json';
+        const unionsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/unions/unions.json';
+
+        let allDistricts = [], allUpazilas = [], allUnions = [];
+
+        async function loadGeoData() {
+            try {
+                // সব ডাটা ফেচ করা
+                const [divRes, distRes, upzRes, uniRes] = await Promise.all([
+                    fetch(divisionsUrl), fetch(districtsUrl), fetch(upazilasUrl), fetch(unionsUrl)
+                ]);
+
+                const divisions = await divRes.json();
+                allDistricts = await distRes.json();
+                allUpazilas = await upzRes.json();
+                allUnions = await uniRes.json();
+
+                const divSelect = document.getElementById('division');
+                divisions[2].data.forEach(div => {
+                    divSelect.add(new Option(div.bn_name, div.id));
+                });
+
+                divSelect.onchange = function() {
+                    const distSelect = document.getElementById('district');
+                    distSelect.innerHTML = '<option value="">জেলা</option>';
+                    document.getElementById('upazila').innerHTML = '<option value="">উপজেলা</option>';
+                    document.getElementById('union').innerHTML = '<option value="">ইউনিয়ন</option>';
+                    
+                    const filtered = allDistricts[2].data.filter(d => d.division_id === this.value);
+                    filtered.forEach(d => distSelect.add(new Option(d.bn_name, d.id)));
+                };
+
+                document.getElementById('district').onchange = function() {
+                    const upzSelect = document.getElementById('upazila');
+                    upzSelect.innerHTML = '<option value="">উপজেলা</option>';
+                    document.getElementById('union').innerHTML = '<option value="">ইউনিয়ন</option>';
+
+                    const filtered = allUpazilas[2].data.filter(u => u.district_id === this.value);
+                    filtered.forEach(u => upzSelect.add(new Option(u.bn_name, u.id)));
+                };
+
+                document.getElementById('upazila').onchange = function() {
+                    const uniSelect = document.getElementById('union');
+                    uniSelect.innerHTML = '<option value="">ইউনিয়ন</option>';
+
+                    const filtered = allUnions[2].data.filter(uni => uni.upazila_id === this.value);
+                    filtered.forEach(uni => uniSelect.add(new Option(uni.bn_name, uni.id)));
+                };
+
+            } catch (error) {
+                console.log("Error loading geo data:", error);
+            }
+        }
+
+        window.onload = loadGeoData;
     </script>
 </body>
 </html>
