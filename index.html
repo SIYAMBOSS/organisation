@@ -3,183 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রিমিয়াম মেম্বার পোর্টাল</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>আদর্শ সমাজ কল্যাণ পরিষদ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .input-glass {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: 0.3s;
-        }
-        .input-glass:focus { border-color: #38bdf8; outline: none; background: rgba(255, 255, 255, 0.12); }
-        .input-glass:invalid { border-color: rgba(239, 68, 68, 0.5); }
-        select option { background: #1e293b; color: white; }
-        .hidden { display: none; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
-    </style>
 </head>
 <body>
 
-    <div class="glass rounded-3xl w-full max-w-xl p-8 text-white m-4">
-        
-        <div id="loginArea">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-sky-400">লগইন</h1>
-                <p class="text-gray-400 mt-2">মোবাইল নাম্বার দিয়ে প্রবেশ করুন</p>
-            </div>
-            <div class="space-y-5">
-                <input type="tel" id="loginPhone" required placeholder="০১৭XXXXXXXX" class="input-glass w-full p-4 rounded-xl text-lg text-center">
-                <button onclick="handleLogin()" class="w-full bg-sky-500 hover:bg-sky-600 py-4 rounded-xl font-bold text-lg shadow-lg transition transform hover:scale-[1.02]">প্রবেশ করুন</button>
-                <p class="text-center text-gray-400">অ্যাকাউন্ট নেই? <button onclick="toggleForm()" class="text-sky-400 font-bold hover:underline">নতুন অ্যাকাউন্ট করুন</button></p>
+    <header class="app-header">
+        <div class="header-content">
+            <h1 class="org-name">আদর্শ সমাজ কল্যাণ পরিষদ</h1>
+            <div class="header-actions">
+                <i class="fas fa-sign-out-alt" id="logout-icon" onclick="handleLogout()"></i>
+                <div class="profile-avatar" onclick="loadPage('profile')">
+                    <img id="user-profile-pic" src="https://via.placeholder.com/100" alt="Profile">
+                </div>
             </div>
         </div>
+    </header>
 
-        <div id="regArea" class="hidden">
-            <h1 class="text-2xl font-bold text-sky-400 mb-6 border-b border-white/10 pb-2 text-center">সদস্য আবেদন ফরম</h1>
-            <form id="registrationForm" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2" onsubmit="handleRegistration(event)">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="fullName" required placeholder="১. পূর্ণ নাম" class="input-glass p-3 rounded-lg">
-                    <input type="text" id="fatherName" required placeholder="২. পিতার নাম" class="input-glass p-3 rounded-lg">
-                    <input type="text" id="motherName" required placeholder="৩. মাতার নাম" class="input-glass p-3 rounded-lg">
-                    <input type="tel" id="regPhone" required placeholder="৪. মোবাইল নাম্বার" class="input-glass p-3 rounded-lg">
-                    <input type="number" id="age" required placeholder="৫. বয়স" class="input-glass p-3 rounded-lg">
-                    <select id="bloodGroup" required class="input-glass p-3 rounded-lg">
-                        <option value="">রক্তের গ্রুপ</option>
-                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                    </select>
-                </div>
+    <main id="main-display">
+        </main>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <select id="maritalStatus" required class="input-glass p-3 rounded-lg">
-                        <option value="">পারিবারিক সম্পর্ক</option>
-                        <option>অবিবাহিত</option>
-                        <option>বিবাহিত</option>
-                    </select>
-                    <select id="profession" required class="input-glass p-3 rounded-lg">
-                        <option value="">৬. পেশা</option>
-                        <option>ছাত্র</option><option>ব্যবসায়ী</option><option>চাকরিজীবী</option><option>অন্যান্য</option>
-                    </select>
-                </div>
-
-                <div class="p-4 bg-white/5 rounded-xl space-y-3 border border-white/10">
-                    <p class="text-sm font-bold text-sky-300 underline">ঠিকানা বিবরণ (সবগুলো পূরণ বাধ্যতামূলক)</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <select id="division" required class="input-glass p-2 rounded-md text-sm"><option value="">বিভাগ</option></select>
-                        <select id="district" required class="input-glass p-2 rounded-md text-sm"><option value="">জেলা</option></select>
-                        <select id="upazila" required class="input-glass p-2 rounded-md text-sm"><option value="">উপজেলা</option></select>
-                        <select id="union" required class="input-glass p-2 rounded-md text-sm"><option value="">ইউনিয়ন</option></select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" id="ward" required placeholder="১১. ওয়ার্ড নম্বর" class="input-glass p-2 rounded-md text-sm">
-                        <input type="text" id="village" required placeholder="১২. গ্রাম/মহল্লা" class="input-glass p-2 rounded-md text-sm">
-                    </div>
-                </div>
-
-                <input type="number" id="donation" required placeholder="১৩. মাসিক সাহায্য (৳)" class="input-glass w-full p-4 rounded-xl border-2 border-sky-500/30 font-bold text-center">
-
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 py-4 rounded-xl font-bold text-lg shadow-lg">আবেদন জমা দিন</button>
-            </form>
-            <p class="text-center text-gray-400 mt-6">আগে থেকেই মেম্বার? <button onclick="toggleForm()" class="text-sky-400 font-bold hover:underline">লগইন করুন</button></p>
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="changeTab(this, 'home')">
+            <i class="fas fa-home"></i>
+            <span>হোম</span>
         </div>
-    </div>
+        <div class="nav-item" onclick="changeTab(this, 'events')">
+            <i class="fas fa-calendar-check"></i>
+            <span>ইভেন্ট</span>
+        </div>
+        <div class="nav-item" onclick="changeTab(this, 'accounts')">
+            <i class="fas fa-chart-line"></i>
+            <span>হিসাব</span>
+        </div>
+        <div class="nav-item" onclick="changeTab(this, 'help')">
+            <i class="fas fa-hand-holding-heart"></i>
+            <span>সাহায্য</span>
+        </div>
+    </nav>
 
-    <script>
-        function toggleForm() {
-            document.getElementById('loginArea').classList.toggle('hidden');
-            document.getElementById('regArea').classList.toggle('hidden');
-        }
-
-        // ডাটা সোর্স লিঙ্ক
-        const divisionsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/divisions/divisions.json';
-        const districtsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/districts/districts.json';
-        const upazilasUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/upazilas/upazilas.json';
-        const unionsUrl = 'https://raw.githubusercontent.com/nuhil/bangladesh-geocode/master/unions/unions.json';
-
-        let allDistricts = [], allUpazilas = [], allUnions = [];
-
-        async function loadGeoData() {
-            try {
-                const [divRes, distRes, upzRes, uniRes] = await Promise.all([
-                    fetch(divisionsUrl), fetch(districtsUrl), fetch(upazilasUrl), fetch(unionsUrl)
-                ]);
-
-                const divisions = await divRes.json();
-                allDistricts = await distRes.json();
-                allUpazilas = await upzRes.json();
-                allUnions = await uniRes.json();
-
-                // বিভাগ লোড (ডাটা স্ট্রাকচার অনুযায়ী index [2].data ব্যবহার করা হয়েছে)
-                const divSelect = document.getElementById('division');
-                divisions[2].data.forEach(div => {
-                    divSelect.add(new Option(div.bn_name, div.id));
-                });
-
-                divSelect.onchange = function() {
-                    const distSelect = document.getElementById('district');
-                    distSelect.innerHTML = '<option value="">জেলা</option>';
-                    const filtered = allDistricts[2].data.filter(d => d.division_id === this.value);
-                    filtered.forEach(d => distSelect.add(new Option(d.bn_name, d.id)));
-                    resetDropdowns(['upazila', 'union']);
-                };
-
-                document.getElementById('district').onchange = function() {
-                    const upzSelect = document.getElementById('upazila');
-                    upzSelect.innerHTML = '<option value="">উপজেলা</option>';
-                    const filtered = allUpazilas[2].data.filter(u => u.district_id === this.value);
-                    filtered.forEach(u => upzSelect.add(new Option(u.bn_name, u.id)));
-                    resetDropdowns(['union']);
-                };
-
-                document.getElementById('upazila').onchange = function() {
-                    const uniSelect = document.getElementById('union');
-                    uniSelect.innerHTML = '<option value="">ইউনিয়ন</option>';
-                    // ইউনিয়ন ফিল্টারিং ফিক্স
-                    const filtered = allUnions[2].data.filter(uni => uni.upazila_id === this.value);
-                    if(filtered.length === 0) {
-                        uniSelect.add(new Option("তথ্য পাওয়া যায়নি", ""));
-                    } else {
-                        filtered.forEach(uni => uniSelect.add(new Option(uni.bn_name, uni.id)));
-                    }
-                };
-
-            } catch (error) {
-                console.error("Geo Data Load Error:", error);
-                alert("ঠিকানা লোড হতে সমস্যা হচ্ছে। ইন্টারনেট কানেকশন চেক করুন।");
-            }
-        }
-
-        function resetDropdowns(ids) {
-            ids.forEach(id => {
-                document.getElementById(id).innerHTML = `<option value="">${id === 'upazila' ? 'উপজেলা' : 'ইউনিয়ন'}</option>`;
-            });
-        }
-
-        // ভ্যালিডেশন সহ রেজিস্ট্রেশন হ্যান্ডলার
-        function handleRegistration(event) {
-            event.preventDefault();
-            alert("আবেদন সফলভাবে গ্রহণ করা হয়েছে! অ্যাডমিন অ্যাপ্রুভালের জন্য অপেক্ষা করুন।");
-            // এখানে Firebase বা ডাটাবেস কোড যুক্ত হবে
-        }
-
-        window.onload = loadGeoData;
-    </script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
