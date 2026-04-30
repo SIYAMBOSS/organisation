@@ -1,72 +1,96 @@
-const mainDisplay = document.getElementById('main-display');
+const content = document.getElementById('app-content');
+const nav = document.getElementById('nav-bar');
 
-function checkAuth() {
+function init() {
     const isRegistered = localStorage.getItem('isRegistered');
-    
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
     if (!isRegistered) {
-        showRegistration();
-    } else {
+        showRegister();
+    } else if (!isLoggedIn) {
         showLogin();
+    } else {
+        showHome();
     }
 }
 
-function showRegistration() {
-    mainDisplay.innerHTML = `
-        <div class="auth-box">
-            <h2>রেজিস্ট্রেশন</h2>
-            <p>আপনার তথ্য দিয়ে পিন সেট করুন</p>
-            <input type="text" id="reg-name" placeholder="পুরো নাম">
-            <input type="number" id="reg-phone" placeholder="মোবাইল নাম্বার">
-            <input type="text" id="reg-union" placeholder="আপনার ইউনিয়ন (ম্যানুয়াল)">
-            <input type="password" id="set-pin" placeholder="৬ ডিজিটের পিন দিন">
-            <button onclick="handleRegister()">অ্যাকাউন্ট তৈরি করুন</button>
+function showRegister() {
+    nav.style.display = 'none';
+    content.innerHTML = `
+        <div class="auth-container">
+            <h2>সদস্য রেজিস্ট্রেশন</h2>
+            <div class="input-group">
+                <input type="text" id="name" placeholder="আপনার নাম" class="full-width">
+                <input type="number" id="phone" placeholder="মোবাইল নাম্বার" class="full-width">
+                <input type="text" id="fname" placeholder="পিতার নাম">
+                <input type="text" id="mname" placeholder="মাতার নাম">
+                <input type="text" id="dist" placeholder="জেলা">
+                <input type="text" id="upazila" placeholder="উপজেলা">
+                <input type="text" id="union" placeholder="ইউনিয়ন">
+                <select id="blood">
+                    <option value="">রক্তের গ্রুপ</option>
+                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                    <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                </select>
+                <input type="text" id="village" placeholder="গ্রাম">
+                <input type="text" id="job" placeholder="পেশা">
+                <input type="date" id="dob" title="জন্ম তারিখ">
+                <input type="text" id="nid" placeholder="NID নাম্বার (ঐচ্ছিক)">
+                <input type="password" id="pin" placeholder="৬ ডিজিটের পিন" class="full-width">
+            </div>
+            <button class="primary-btn" onclick="saveUser()">অ্যাকাউন্ট তৈরি করুন</button>
         </div>
     `;
 }
 
-function handleRegister() {
-    const name = document.getElementById('reg-name').value;
-    const pin = document.getElementById('set-pin').value;
-    
-    if(name && pin.length >= 4) {
+function saveUser() {
+    const name = document.getElementById('name').value;
+    const pin = document.getElementById('pin').value;
+    const phone = document.getElementById('phone').value;
+
+    if(name && pin.length >= 4 && phone) {
+        const userData = {
+            name: name,
+            phone: phone,
+            pin: pin,
+            union: document.getElementById('union').value
+        };
+        localStorage.setItem('userData', JSON.stringify(userData));
         localStorage.setItem('isRegistered', 'true');
-        localStorage.setItem('userPin', pin);
-        localStorage.setItem('userName', name);
-        alert('সফল হয়েছে! এখন পিন দিয়ে লগইন করুন।');
-        location.reload();
+        alert('অভিনন্দন! রেজিস্ট্রেশন সফল হয়েছে।');
+        init();
     } else {
-        alert('সব তথ্য সঠিকভাবে দিন।');
+        alert('দয়া করে নাম, নাম্বার এবং পিন অবশ্যই দিন।');
     }
 }
 
 function showLogin() {
-    const userName = localStorage.getItem('userName');
-    mainDisplay.innerHTML = `
-        <div class="auth-box">
-            <h2>স্বাগতম, ${userName}</h2>
-            <p>প্রবেশ করতে আপনার পিন দিন</p>
-            <input type="password" id="login-pin" placeholder="আপনার পিন">
-            <button onclick="handleLogin()">লগইন করুন</button>
+    const data = JSON.parse(localStorage.getItem('userData'));
+    content.innerHTML = `
+        <div class="auth-container" style="text-align:center;">
+            <h2>লগইন করুন</h2>
+            <p>স্বাগতম, ${data.name}</p>
+            <input type="password" id="lpin" placeholder="আপনার পিন দিন">
+            <button class="primary-btn" onclick="verifyLogin()">প্রবেশ করুন</button>
         </div>
     `;
 }
 
-function handleLogin() {
-    const enteredPin = document.getElementById('login-pin').value;
-    const savedPin = localStorage.getItem('userPin');
-    
-    if(enteredPin === savedPin) {
+function verifyLogin() {
+    const pin = document.getElementById('lpin').value;
+    const saved = JSON.parse(localStorage.getItem('userData'));
+    if(pin === saved.pin) {
         localStorage.setItem('isLoggedIn', 'true');
-        location.reload();
+        init();
     } else {
         alert('ভুল পিন! আবার চেষ্টা করুন।');
     }
 }
 
-// অটো রান
-if (localStorage.getItem('isLoggedIn') !== 'true') {
-    checkAuth();
-} else {
-    // এখানে হোম পেজ লোড হবে
-    window.onload = () => loadPage('home');
+function showHome() {
+    nav.style.display = 'flex';
+    content.style.alignItems = 'flex-start';
+    content.innerHTML = `<h2 style="margin-top:50px;">আদর্শ সমাজ কল্যাণ পরিষদে স্বাগতম!</h2>`;
 }
+
+init();
