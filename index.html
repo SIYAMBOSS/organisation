@@ -10,38 +10,14 @@
 </head>
 <body>
 
-    <header class="app-header">
-        <div class="header-content">
-            <h1 class="org-name">আদর্শ সমাজ কল্যাণ পরিষদ</h1>
-            <div class="header-actions">
-                <i class="fas fa-sign-out-alt" id="logout-icon" onclick="handleLogout()"></i>
-                <div class="profile-avatar" onclick="loadPage('profile')">
-                    <img id="user-profile-pic" src="https://via.placeholder.com/100" alt="Profile">
-                </div>
-            </div>
+    <div id="app-content">
         </div>
-    </header>
 
-    <main id="main-display">
-        </main>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="changeTab(this, 'home')">
-            <i class="fas fa-home"></i>
-            <span>হোম</span>
-        </div>
-        <div class="nav-item" onclick="changeTab(this, 'events')">
-            <i class="fas fa-calendar-check"></i>
-            <span>ইভেন্ট</span>
-        </div>
-        <div class="nav-item" onclick="changeTab(this, 'accounts')">
-            <i class="fas fa-chart-line"></i>
-            <span>হিসাব</span>
-        </div>
-        <div class="nav-item" onclick="changeTab(this, 'help')">
-            <i class="fas fa-hand-holding-heart"></i>
-            <span>সাহায্য</span>
-        </div>
+    <nav class="bottom-nav" id="nav-bar" style="display: none;">
+        <div class="nav-item active" onclick="loadPage('home')"><i class="fas fa-home"></i><span>হোম</span></div>
+        <div class="nav-item" onclick="loadPage('events')"><i class="fas fa-calendar-alt"></i><span>ইভেন্ট</span></div>
+        <div class="nav-item" onclick="loadPage('accounts')"><i class="fas fa-wallet"></i><span>হিসাব</span></div>
+        <div class="nav-item" onclick="loadPage('help')"><i class="fas fa-hand-holding-heart"></i><span>সাহায্য</span></div>
     </nav>
 
     <script src="auth.js"></script>
